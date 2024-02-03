@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#MAX 20 /* Max value of the array */
+#define MAX 20 /* Max value of the array */
 
 int main(void) {
     
