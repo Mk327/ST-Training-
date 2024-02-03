@@ -1,23 +1,19 @@
-
-#include <stdio.h>
 #include <unistd.h>
-
- 
-
+#include <stdio.h>
 
 
-int main (void)
 
+
+
+int main(void)
 {
 
+    char cwd[150];
+    if (getcwd(cwd, sizeof(cwd)) == NULL) {
+	printf("getcwd() error");
+    } else {
+	printf("current working directory : %s\n", cwd);
+    }
 
-char  *address; 
-getcwd(address,100);
-
-printf ("%s\n",address);
-//printf ("%s\n",add);
-
-
-return 0;
-
+    return 0;
 }
