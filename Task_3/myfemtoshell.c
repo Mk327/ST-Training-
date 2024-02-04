@@ -1,144 +1,99 @@
 #include <stdio.h>
-#include <string.h>//to use strtok function
+#include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 
-#define MAX 100 /* Max value of the array */
+#define MAX 256
 
-
-void str_token(char *input,char **name_in,int size);
-char **name=NULL;
-
-int main(void) {
+void str_token(char *input, char **name_in, int size);
+void pwd_new(void);
+void echo_new (char **name);
+int main(void)
+{
+    char **name = (char **) malloc(MAX * sizeof(char *));
+    char message[MAX];
+    char exit_ms[MAX] = "exit";
+    char Match = 0;
     
-     char message[MAX];/* string to print user message */
-     char exit_ms[MAX]="exit"; /* strinf to save the exit command */
-     char Match =0; /* Var to check if the message is the exit com or not*/
-     while (1)
-     {
-         printf("Ana Fel ALforma Alnharda > ");
-         fgets (message,MAX,stdin);
-         for (char i =0 ; i<4 ; i++)
-         {
-             if (message[i] == exit_ms[i])
-             {
-                 Match++;
-             }
-            
-         }
-          if (Match == 4)
-             {
-                 printf ("skt al slama ");
-                 break;
-             }
-         else 
-            {
-             Match =0;
-            }
-         printf ("You said : %s\n",message);
-     
-        str_token(message,name,MAX);
 
-       if (name[0] == "echo")
-       {
-      
-	       char j =1;
-	       while (name[j] != NULL)
-               {
-		       printf ("%s ",name[j]);
-                       j++;
-               }
+    while (1) {
+	printf("Ana Fel ALforma Alnharda > ");
+	fgets(message, MAX, stdin);
 
-               if (j == 1)
-               {
-               printf ("\n");
-               }
-       }
+	for (char i = 0; i < 4; i++) {
+	    if (message[i] == exit_ms[i]) {
+		Match++;
+	    }
+	}
 
-       else if (name[0] == "pwd")
-       {
-       
-        char cwd[MAX];
-        if (getcwd(cwd, sizeof(cwd)) == NULL) {
-        printf("getcwd() error");
-    } else {
-        printf("current working directory : %s\n", cwd);
+	if (Match == 4) {
+	    printf("skt al slama\n");
+	    break;
+	} else {
+	    Match = 0;
+	}
+
+	printf("You said : %s\n", message);
+	str_token(message, name, MAX);
+
+	if (strcmp(name[0], "echo") == 0) {
+	    echo_new(name);
+	} else if (strcmp(name[0], "pwd") == 0) {
+	    printf("Before pwd_new\n");
+	    pwd_new();
+	} else if (strcmp(name[0], "cd") == 0) {
+	    name[1][strlen(name[1]) - 1] = 0;
+	    if (chdir(name[1]) == 0) {
+		printf("directory changed\n");
+	    } else {
+		printf("error in changing directory\n");
+	    }
+	}
+	// Remember to free the allocated memory
+	for (int i = 0; i < MAX && name[i] != NULL; i++) {
+	    free(name[i]);
+	}
     }
 
-
-       }
-      else if (name [0] == "cd")
-      {
-      
-      
-      name [1] [strlen(name[1])- 1] = 0;
-       if ( chdir(name [1]) == 0)
-       {     
-      
-      printf ("dirctory changed");
-      
-      }
-       else 
-       {
-       
-	 printf("error in change dirctory" );
-
-       }
-       
-       
-      }
-       
-
-for (char k = 0 ; k < MAX && name[k] != NULL ;k++)
-    {
-    free(name[k]);
-    }
-      
-
- 
-     
-
-     }
-
-  
+    free(name);			// Don't forget to free the array itself
 
     return 0;
 }
 
-
-
-
-void str_token(char *input,char **name_in,int size)
+void str_token(char *input, char **name_in, int size)
 {
+    int i = 0;
+    char *token = strtok(input, " ");
 
-   int i=0;
-   char *token= strtok(input," "); // evert sperate name (command or arg ) will be saved in token
+    while (token != NULL && i < size) {
+	name_in[i] = strdup(token);
+	token = strtok(NULL, " ");
+	i++;
+    }
 
-   for (;token != NULL && i<size;i++)
-   {
-   
-	   name[i]=strdup(token);
-	   token = strtok(NULL," ");
-   
-   }
-
-   while(i<size)
-   {
-   
-   name[i] = NULL ;// to make sure the remaining arr wiil be filled with NULL
-   i++;
-   
-   }
-
-
-
-
-
+    // Make sure the remaining array will be filled with NULL
+    for (; i < size; i++) {
+	name_in[i] = NULL;
+    }
 }
 
+void pwd_new(void){
+    char cwd[MAX];
+	if (getcwd(cwd, sizeof(cwd)) == NULL) {
+    printf("getcwd() error");
+	} 
+	else {
+		printf("current working directory: %s\n", cwd);
+	    }
+}
+void echo_new (char **name){
+    char j = 1;
+	while (name[j] != NULL) {
+	printf("%s ", name[j]);
+	j++;
+	}
 
-
-
-
-
-
+	if (j == 1) {
+	    printf("\n");
+	    }
+}
