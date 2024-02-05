@@ -28,3 +28,18 @@ EX : input > old_file New_file
 It will implement some built in commands (using tokens from strtok function) 
 like discussed above and add new function which is cd that we use for it the 
 chdir function 
+EX : 
+Ana Fel ALforma Alnharda > pwd
+You said : pwd
+
+current working directory: /home/public/Task_3
+Ana Fel ALforma Alnharda > cd ../
+You said : cd ../
+
+directory changed
+Ana Fel ALforma Alnharda > echo mohamed khaled
+You said : echo mohamed khaled
+
+mohamed khaled
+ Ana Fel ALforma Alnharda > exit
+skt al slama
