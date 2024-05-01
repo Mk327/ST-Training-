@@ -49,3 +49,4 @@ This project aims to provide a custom implementation of dynamic memory allocatio
 
 - This implementation is designed for educational purposes and may not be as efficient or robust as standard library implementations.
 - Use caution when integrating this memory manager into production code, as it may not offer the same level of performance or compatibility as standard library functions.
+- I added a variety of test cases at main.c too test the project so enjoy!
