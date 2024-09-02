@@ -1,0 +1,9 @@
+def do_mypatch(d):
+  bb.note ("runnin mypatch")
+  pyfunc(d)
+
+do_mypatch(d)
+
+def pyfunc(o):
+    print(dir(o))
+
